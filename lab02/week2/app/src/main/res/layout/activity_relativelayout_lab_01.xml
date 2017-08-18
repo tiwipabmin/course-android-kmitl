@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tv1"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignParentLeft="true"
+        android:background="#FF0000"
+        android:gravity="center"
+        android:text="Hello" />
+
+    <TextView
+        android:id="@+id/tv2"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_centerHorizontal="true"
+        android:background="#00FF00"
+        android:gravity="center"
+        android:text="Hello" />
+
+    <TextView
+        android:id="@+id/tv3"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignParentRight="true"
+        android:background="#0000FF"
+        android:gravity="center"
+        android:text="Hello" />
+
+    <TextView
+        android:id="@+id/tv4"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:background="#FF0000"
+        android:gravity="center"
+        android:text="Hello" />
+
+    <TextView
+        android:id="@+id/tv5"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:background="#00FF00"
+        android:gravity="center"
+        android:text="Hello" />
+
+    <TextView
+        android:id="@+id/tv6"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:background="#0000FF"
+        android:gravity="center"
+        android:text="Hello" />
+
+    <TextView
+        android:id="@+id/tv7"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:background="#FF0000"
+        android:gravity="center"
+        android:text="Hello" />
+
+    <TextView
+        android:id="@+id/tv8"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:background="#00FF00"
+        android:gravity="center"
+        android:text="Hello" />
+
+    <TextView
+        android:id="@+id/tv9"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:background="#0000FF"
+        android:gravity="center"
+        android:text="Hello" />
+
+
+
+</RelativeLayout>
