@@ -6,25 +6,31 @@
     android:layout_height="match_parent"
     tools:context="kmitl.lab03.tiwipab58070044.simplemydot.MainActivity">
 
-    <kmitl.lab03.tiwipab58070044.simplemydot.view.DotView
-        android:id="@+id/dotView"
-        android:layout_width="302dp"
-        android:layout_height="374dp"
-        android:layout_marginRight="8dp"
-        app:layout_constraintRight_toRightOf="parent"
+    <Button
+        android:id="@+id/btn_clearDot"
+        android:onClick="onClearDotButtonClicked"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
         android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:backgroundTint="#FF0000"
+        android:text="@string/clear_dot"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/btn_randomDot"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="8dp" />
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintHorizontal_bias="0.91" />
 
     <Button
         android:id="@+id/btn_randomDot"
-        android:onClick="onRandomDot"
+        android:onClick="onClearDotButtonClicked"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="16dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:backgroundTint="#FF0000"
@@ -34,6 +40,20 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginStart="8dp"/>
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintHorizontal_bias="0.123" />
+
+    <kmitl.lab03.tiwipab58070044.simplemydot.view.DotView
+        android:id="@+id/dotView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
+
+
 
 </android.support.constraint.ConstraintLayout>
