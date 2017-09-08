@@ -4,32 +4,16 @@ import android.graphics.Paint;
 
 public class Dot {
 
-    public interface OnDotChangedListener {
-        void onDotChange(Dot dot);
-    }
-
-    private OnDotChangedListener listener;
-
-    public OnDotChangedListener getListener() {
-        return listener;
-    }
-
-    public void setListener(OnDotChangedListener listener) {
-        this.listener = listener;
-    }
-
     private int centerX;
     private int centerY;
     private int radius;
-    private Paint paint;
+    private int color;
 
-    public Dot(OnDotChangedListener listener, int centerX, int centerY, int radius, Paint paint) {
-        this.listener = listener;
+    public Dot(int centerX, int centerY, int radius, int color) {
         this.centerX = centerX;
         this.centerY = centerY;
         this.radius = radius;
-        this.paint = paint;
-        this.listener.onDotChange(Dot.this);
+        this.color = color;
 
     }
 
@@ -40,12 +24,12 @@ public class Dot {
 
     }
 
-    public Paint getPaint() {
-        return paint;
+    public int getColor() {
+        return color;
     }
 
-    public void setPaint(Paint paint) {
-        this.paint = paint;
+    public void setColor(int color) {
+        this.color = color;
     }
 
     public int getCenterX() {
@@ -54,7 +38,6 @@ public class Dot {
 
     public void setCenterX(int centerX) {
         this.centerX = centerX;
-        this.listener.onDotChange(Dot.this);
     }
 
     public int getCenterY() {
@@ -63,7 +46,6 @@ public class Dot {
 
     public void setCenterY(int centerY) {
         this.centerY = centerY;
-        this.listener.onDotChange(Dot.this);
     }
 
     public int getRadius() {
