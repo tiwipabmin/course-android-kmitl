@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">SimpleMyDot</string>
+    <string name="random_dot">RANDOM DOT</string>
+    <string name="clear_dot">CLEAR DOT</string>
+    <string name="facebook_app_id">mafiab-boy@hotmail.com</string>
+    <string name="menu_title"><b><font fgcolor='#3366ff'>Menu</font></b></string>
+
+    <string-array name="items_menu">
+        <item><font fgcolor='#336600'>Edit</font></item>
+        <item><font fgcolor='#336600'>Delete</font></item>
+    </string-array>
+</resources>
