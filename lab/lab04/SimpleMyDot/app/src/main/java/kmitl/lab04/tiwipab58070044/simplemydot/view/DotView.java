@@ -41,6 +41,7 @@ public class DotView extends View{
     }
 
     private OnDotViewPressListener onDotViewPressListener;
+
     public void setOnDotViewPressListener(
             OnDotViewPressListener onDotViewPressListener) {
         this.onDotViewPressListener = onDotViewPressListener;

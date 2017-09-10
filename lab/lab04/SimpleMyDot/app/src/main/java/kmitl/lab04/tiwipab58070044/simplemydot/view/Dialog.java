@@ -14,7 +14,7 @@ public class Dialog {
 
     public interface OnShowedDialog {
 
-        public void onEditPressed();
+        public void onEditPressed(int position);
 
         public void onDeletePressed(int position);
     }
@@ -39,7 +39,7 @@ public class Dialog {
             public void onClick(DialogInterface dialog, int which) {
                 switch(which){
                     case 0:
-                        listener.onEditPressed();
+                        listener.onEditPressed(position);
                         break;
                     case 1:
                         listener.onDeletePressed(position);

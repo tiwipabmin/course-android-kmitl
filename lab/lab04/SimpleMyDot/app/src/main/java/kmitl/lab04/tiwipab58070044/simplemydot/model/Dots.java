@@ -1,5 +1,8 @@
 package kmitl.lab04.tiwipab58070044.simplemydot.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +21,11 @@ public class Dots {
 
     public void addDot(Dot dot){
         allDot.add(dot);
+        this.listener.onDotsChanged(this);
+    }
+
+    public void setDot(int position, Dot dot){
+        allDot.set(position, dot);
         this.listener.onDotsChanged(this);
     }
 

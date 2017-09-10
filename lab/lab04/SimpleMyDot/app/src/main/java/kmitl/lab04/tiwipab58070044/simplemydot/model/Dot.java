@@ -1,10 +1,47 @@
 package kmitl.lab04.tiwipab58070044.simplemydot.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.io.Serializable;
+
 /**
  * Created by tiwip on 9/10/2017.
  */
 
-public class Dot {
+public class Dot implements Parcelable {
+
+    protected Dot(Parcel in) {
+        centerX = in.readInt();
+        centerY = in.readInt();
+        radius = in.readInt();
+        color = in.readInt();
+    }
+
+    public static final Creator<Dot> CREATOR = new Creator<Dot>() {
+        @Override
+        public Dot createFromParcel(Parcel in) {
+            return new Dot(in);
+        }
+
+        @Override
+        public Dot[] newArray(int size) {
+            return new Dot[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(centerX);
+        dest.writeInt(centerY);
+        dest.writeInt(radius);
+        dest.writeInt(color);
+    }
 
     private int centerX;
     private int centerY;
@@ -16,7 +53,6 @@ public class Dot {
         this.centerY = centerY;
         this.radius = radius;
         this.color = color;
-
     }
 
     public Dot(int centerX, int centerY, int radius) {
@@ -57,6 +93,5 @@ public class Dot {
     public void setRadius(int radius) {
         this.radius = radius;
     }
-
 
 }

@@ -1,8 +1,11 @@
 package kmitl.lab04.tiwipab58070044.simplemydot;
 
+import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import java.util.Random;
 
@@ -12,16 +15,21 @@ import kmitl.lab04.tiwipab58070044.simplemydot.model.Dots;
 import kmitl.lab04.tiwipab58070044.simplemydot.view.Dialog;
 import kmitl.lab04.tiwipab58070044.simplemydot.view.DotView;
 
-public class MainActivity extends AppCompatActivity implements Dots.OnDotsChangeListener, DotView.OnDotViewPressListener, Dialog.OnShowedDialog{
+public class MainActivity extends AppCompatActivity implements Dots.OnDotsChangeListener, DotView.OnDotViewPressListener, Dialog.OnShowedDialog {
+
+    final int EDIT_REQUEST = 54920;
 
     private Dots dots = null;
     private DotView dotView = null;
     private Dialog dialog = null;
+    private Intent indexInBound = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        indexInBound = getIntent();
 
         dotView = (DotView) findViewById(R.id.dotView);
         dotView.setOnDotViewPressListener(this);
@@ -66,12 +74,30 @@ public class MainActivity extends AppCompatActivity implements Dots.OnDotsChange
     }
 
     @Override
-    public void onEditPressed() {
-
+    public void onEditPressed(int position) {
+        Intent intent = new Intent(MainActivity.this, EditActivity.class);
+        intent.putExtra("dot", dots.getAllDot().get(position));
+        intent.putExtra("position", position);
+        startActivityForResult(intent, EDIT_REQUEST);
     }
 
     @Override
     public void onDeletePressed(int position) {
         dots.removeBy(position);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == EDIT_REQUEST){
+            if(resultCode == RESULT_OK){
+                Dot dot = data.getParcelableExtra("dot");
+                int position = data.getIntExtra("position", -1);
+
+                if(position != -1){
+                    dots.setDot(position, dot);
+                    Toast.makeText(MainActivity.this, position + "", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
     }
 }
