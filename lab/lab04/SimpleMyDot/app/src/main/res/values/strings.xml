@@ -5,6 +5,8 @@
     <string name="facebook_app_id">mafiab-boy@hotmail.com</string>
     <string name="menu_title"><b><font fgcolor='#3366ff'>Menu</font></b></string>
     <string name="btn_color"><b>Color</b></string>
+    <string name="fbtn_sharedOnFacebook"><b><font fgcolor="#ffffff">Share on facebook</font></b></string>
+    <string name="btn_capture"><b><font fgcolor="#ffffff">Capture</font></b></string>
 
     <string-array name="items_menu">
         <item><font fgcolor='#336600'>Edit</font></item>
