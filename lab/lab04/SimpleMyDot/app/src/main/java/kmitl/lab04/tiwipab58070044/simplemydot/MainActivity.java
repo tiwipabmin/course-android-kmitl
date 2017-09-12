@@ -36,14 +36,11 @@ public class MainActivity extends AppCompatActivity implements Dots.OnDotsChange
     private Dots dots = null;
     private DotView dotView = null;
     private Dialog dialog = null;
-    private Intent indexInBound = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        indexInBound = getIntent();
 
         dotView = (DotView) findViewById(R.id.dotView);
         dotView.setOnDotViewPressListener(this);
@@ -87,20 +84,22 @@ public class MainActivity extends AppCompatActivity implements Dots.OnDotsChange
 
         String imagePath = addImageToGallery(bitmap);
 
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-        byte[] byteArray = stream.toByteArray();
+        if(!imagePath.equals("error")){
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+            byte[] byteArray = stream.toByteArray();
 
-        Intent intent = new Intent(MainActivity.this, CaptureActivity.class);
-        intent.putExtra("capture", byteArray);
-        intent.putExtra("imagePath", imagePath);
-        startActivity(intent);
+            Intent intent = new Intent(MainActivity.this, CaptureActivity.class);
+            intent.putExtra("capture", byteArray);
+            intent.putExtra("imagePath", imagePath);
+            startActivity(intent);
+        }
+
     }
 
     public String addImageToGallery(Bitmap bitmap) throws IOException {
 
         File imageFile = createImageFile("SimpleMyDots");
-        String imagePath = imageFile.getAbsolutePath();
 
         try
         {
@@ -109,19 +108,13 @@ public class MainActivity extends AppCompatActivity implements Dots.OnDotsChange
             fileOutputStream.flush();
             fileOutputStream.close();
 
-            Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-            File f = new File(imagePath);
-            Uri contentUri = Uri.fromFile(f);
-            mediaScanIntent.setData(contentUri);
-            this.sendBroadcast(mediaScanIntent);
+//            Toast.makeText(this, "Successed : " + imageFile, Toast.LENGTH_SHORT).show();
 
-//            Toast.makeText(this, "Successed : " + imagePath, Toast.LENGTH_SHORT).show();
-
-            return imagePath;
+            return imageFile.getAbsolutePath();
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            Log.i("error", String.valueOf(e));
 //            Toast.makeText(this, "Failed", Toast.LENGTH_SHORT).show();
         }
 
@@ -132,11 +125,15 @@ public class MainActivity extends AppCompatActivity implements Dots.OnDotsChange
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileNameDir = "SimpleMyDot_" + timeStamp;
+
+        // make directory
         File storageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), albumName);
         if(!storageDir.exists()){
-            storageDir.mkdirs();
-            Log.i("error", String.valueOf(storageDir.mkdirs()));
+            if(!storageDir.mkdirs()){
+                Log.i("error", "Directory not created : " + !storageDir.mkdirs());
+            }
         }
+
         File image = new File(storageDir,
                 imageFileNameDir +  /* prefix */
                         ".jpg"         /* suffix */
