@@ -3,31 +3,25 @@ package kmitl.lab04.tiwipab58070044.simplemydot;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.net.Uri;
-import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Random;
 
 import kmitl.lab04.tiwipab58070044.simplemydot.model.Colors;
 import kmitl.lab04.tiwipab58070044.simplemydot.model.Dot;
 import kmitl.lab04.tiwipab58070044.simplemydot.model.Dots;
-import kmitl.lab04.tiwipab58070044.simplemydot.view.Dialog;
+import kmitl.lab04.tiwipab58070044.simplemydot.view.CaptureDialog;
 import kmitl.lab04.tiwipab58070044.simplemydot.view.DotView;
+import kmitl.lab04.tiwipab58070044.simplemydot.view.EditDotDialog;
 
-public class MainActivity extends AppCompatActivity implements Dots.OnDotsChangeListener, DotView.OnDotViewPressListener, Dialog.OnShowedDialog {
+public class MainActivity extends AppCompatActivity implements Dots.OnDotsChangeListener,
+        DotView.OnDotViewPressListener, EditDotDialog.OnShowedEditDotDialog, CaptureDialog.OnShowedCaptureDialog {
 
     final int EDIT_REQUEST = 54920;
     final int REQUEST_WRITE_EXTERNAL_PERMISSIONS = 1234;
@@ -35,7 +29,9 @@ public class MainActivity extends AppCompatActivity implements Dots.OnDotsChange
 
     private Dots dots = null;
     private DotView dotView = null;
-    private Dialog dialog = null;
+    private EditDotDialog editDotDialog = null;
+    private CaptureDialog captureDialog = null;
+    private ImageView iv_test;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,8 +44,13 @@ public class MainActivity extends AppCompatActivity implements Dots.OnDotsChange
         dots = new Dots();
         dots.setListener(this);
 
-        dialog = new Dialog(this);
-        dialog.setListener(this);
+        editDotDialog = new EditDotDialog(this);
+        editDotDialog.setListener(this);
+
+        captureDialog = new CaptureDialog(this);
+        captureDialog.setListener(this);
+
+        iv_test = (ImageView) findViewById(R.id.iv_test);
 
         checkPermission();
     }
@@ -77,68 +78,22 @@ public class MainActivity extends AppCompatActivity implements Dots.OnDotsChange
         dots.addDot(dot);
     }
 
-    public void onCapture(View view) throws IOException {
+    public void onCapture(View view) {
+
         dotView.setDrawingCacheEnabled(true);
-        Bitmap bitmap = Bitmap.createBitmap(dotView.getDrawingCache());
+        Bitmap bScreenDots = Bitmap.createBitmap(dotView.getDrawingCache());
         dotView.setDrawingCacheEnabled(false);
 
-        String imagePath = addImageToGallery(bitmap);
+        View screenPhone = getWindow().getDecorView().getRootView();
+        screenPhone.setDrawingCacheEnabled(true);
+        Bitmap bScreenPhone = Bitmap.createBitmap(screenPhone.getDrawingCache());
+        screenPhone.setDrawingCacheEnabled(false);
 
-        if(!imagePath.equals("error")){
-            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-            byte[] byteArray = stream.toByteArray();
 
-            Intent intent = new Intent(MainActivity.this, CaptureActivity.class);
-            intent.putExtra("capture", byteArray);
-            intent.putExtra("imagePath", imagePath);
-            startActivity(intent);
-        }
-
-    }
-
-    public String addImageToGallery(Bitmap bitmap) throws IOException {
-
-        File imageFile = createImageFile("SimpleMyDots");
-
-        try
-        {
-            FileOutputStream fileOutputStream = new FileOutputStream(imageFile);
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fileOutputStream);
-            fileOutputStream.flush();
-            fileOutputStream.close();
-
-//            Toast.makeText(this, "Successed : " + imageFile, Toast.LENGTH_SHORT).show();
-
-            return imageFile.getAbsolutePath();
-        }
-        catch (Exception e)
-        {
-            Log.i("error", String.valueOf(e));
-//            Toast.makeText(this, "Failed", Toast.LENGTH_SHORT).show();
-        }
-
-        return "error";
-    }
-
-    private File createImageFile(String albumName) throws IOException {
-        // Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileNameDir = "SimpleMyDot_" + timeStamp;
-
-        // make directory
-        File storageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), albumName);
-        if(!storageDir.exists()){
-            if(!storageDir.mkdirs()){
-                Log.i("error", "Directory not created : " + !storageDir.mkdirs());
-            }
-        }
-
-        File image = new File(storageDir,
-                imageFileNameDir +  /* prefix */
-                        ".jpg"         /* suffix */
-        );
-        return image;
+        captureDialog.setImageView(iv_test);
+        captureDialog.setScreenPhone(bScreenPhone);
+        captureDialog.setScreenDots(bScreenDots);
+        captureDialog.showCaptureDialog();
     }
 
     @Override
@@ -160,7 +115,7 @@ public class MainActivity extends AppCompatActivity implements Dots.OnDotsChange
             Dot dot = new Dot(x, y, radius, new Colors().getColor());
             dots.addDot(dot);
         } else {
-            dialog.showDialog(position);
+            editDotDialog.showDialog(position);
         }
     }
 
@@ -188,6 +143,38 @@ public class MainActivity extends AppCompatActivity implements Dots.OnDotsChange
                     dots.setDot(position, dot);
                 }
             }
+        }
+    }
+
+    @Override
+    public void onCaptureScreenPhonePressed(Bitmap bitmap) {
+
+        String imagePath = captureDialog.addImageToGallery(bitmap);
+
+        if(!imagePath.equals("error")){
+
+            Intent intent = new Intent(MainActivity.this, CaptureActivity.class);
+            intent.putExtra("imagePath", imagePath);
+            startActivity(intent);
+        } else {
+
+            Toast.makeText(this, "Capture failed", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onCaptureScreenDotsPressed(Bitmap bitmap) {
+
+        String imagePath = captureDialog.addImageToGallery(bitmap);
+
+        if(!imagePath.equals("error")){
+
+            Intent intent = new Intent(MainActivity.this, CaptureActivity.class);
+            intent.putExtra("imagePath", imagePath);
+            startActivity(intent);
+        } else {
+
+            Toast.makeText(this, "Capture failed", Toast.LENGTH_SHORT).show();
         }
     }
 }

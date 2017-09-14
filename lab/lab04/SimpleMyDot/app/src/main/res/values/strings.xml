@@ -8,8 +8,13 @@
     <string name="fbtn_share"><b><font fgcolor="#ffffff">Share now!</font></b></string>
     <string name="btn_capture"><b><font fgcolor="#ffffff">Capture</font></b></string>
 
-    <string-array name="items_menu">
+    <string-array name="items_menu_edit_dot">
         <item><font fgcolor='#336600'>Edit</font></item>
         <item><font fgcolor='#336600'>Delete</font></item>
+    </string-array>
+
+    <string-array name="items_menu_capture">
+        <item><font fgcolor='#336600'>Capture screen phone</font></item>
+        <item><font fgcolor='#336600'>Capture screen dots</font></item>
     </string-array>
 </resources>
