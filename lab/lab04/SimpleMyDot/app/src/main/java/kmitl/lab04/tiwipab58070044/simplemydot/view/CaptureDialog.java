@@ -27,9 +27,9 @@ public class CaptureDialog {
 
     public interface OnShowedCaptureDialog {
 
-        public void onCaptureScreenPhonePressed(Bitmap screenPhone);
+        public void onCaptureScreenPhonePressed(String imagePath);
 
-        public void onCaptureScreenDotsPressed(Bitmap screenDots);
+        public void onCaptureScreenDotsPressed(String imagePath);
     }
 
     private OnShowedCaptureDialog listener;
@@ -40,7 +40,6 @@ public class CaptureDialog {
 
     private Context context = null;
     private Bitmap screenPhone = null, screenDots = null;
-    private ImageView imageView;
 
     public void setScreenPhone(Bitmap screenPhone) {
         this.screenPhone = screenPhone;
@@ -48,10 +47,6 @@ public class CaptureDialog {
 
     public void setScreenDots(Bitmap screenDots) {
         this.screenDots = screenDots;
-    }
-
-    public void setImageView(ImageView imageView) {
-        this.imageView = imageView;
     }
 
     public CaptureDialog(Context context){
@@ -66,10 +61,10 @@ public class CaptureDialog {
             public void onClick(DialogInterface dialog, int which) {
                 switch(which){
                     case 0:
-                        listener.onCaptureScreenPhonePressed(screenPhone);
+                        listener.onCaptureScreenPhonePressed(addImageToGallery(screenPhone));
                         break;
                     case 1:
-                        listener.onCaptureScreenDotsPressed(screenDots);
+                        listener.onCaptureScreenDotsPressed(addImageToGallery(screenDots));
                         break;
                     default:
                 }

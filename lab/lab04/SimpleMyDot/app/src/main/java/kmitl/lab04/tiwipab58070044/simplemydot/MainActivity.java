@@ -31,7 +31,6 @@ public class MainActivity extends AppCompatActivity implements Dots.OnDotsChange
     private DotView dotView = null;
     private EditDotDialog editDotDialog = null;
     private CaptureDialog captureDialog = null;
-    private ImageView iv_test;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,8 +48,6 @@ public class MainActivity extends AppCompatActivity implements Dots.OnDotsChange
 
         captureDialog = new CaptureDialog(this);
         captureDialog.setListener(this);
-
-        iv_test = (ImageView) findViewById(R.id.iv_test);
 
         checkPermission();
     }
@@ -89,8 +86,6 @@ public class MainActivity extends AppCompatActivity implements Dots.OnDotsChange
         Bitmap bScreenPhone = Bitmap.createBitmap(screenPhone.getDrawingCache());
         screenPhone.setDrawingCacheEnabled(false);
 
-
-        captureDialog.setImageView(iv_test);
         captureDialog.setScreenPhone(bScreenPhone);
         captureDialog.setScreenDots(bScreenDots);
         captureDialog.showCaptureDialog();
@@ -115,12 +110,14 @@ public class MainActivity extends AppCompatActivity implements Dots.OnDotsChange
             Dot dot = new Dot(x, y, radius, new Colors().getColor());
             dots.addDot(dot);
         } else {
-            editDotDialog.showDialog(position);
+            editDotDialog.setAllDot(dots.getAllDot());
+            editDotDialog.setPosition(position);
+            editDotDialog.showDialog();
         }
     }
 
     @Override
-    public void onEditPressed(int position) {
+    public void onEditPressed(Dot dot, int position) {
         Intent intent = new Intent(MainActivity.this, EditActivity.class);
         intent.putExtra("dot", dots.getAllDot().get(position));
         intent.putExtra("position", position);
@@ -147,9 +144,7 @@ public class MainActivity extends AppCompatActivity implements Dots.OnDotsChange
     }
 
     @Override
-    public void onCaptureScreenPhonePressed(Bitmap bitmap) {
-
-        String imagePath = captureDialog.addImageToGallery(bitmap);
+    public void onCaptureScreenPhonePressed(String imagePath) {
 
         if(!imagePath.equals("error")){
 
@@ -163,9 +158,7 @@ public class MainActivity extends AppCompatActivity implements Dots.OnDotsChange
     }
 
     @Override
-    public void onCaptureScreenDotsPressed(Bitmap bitmap) {
-
-        String imagePath = captureDialog.addImageToGallery(bitmap);
+    public void onCaptureScreenDotsPressed(String imagePath) {
 
         if(!imagePath.equals("error")){
 
