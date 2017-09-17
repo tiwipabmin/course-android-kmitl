@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">SimpleMyDot</string>
+    <string name="random_dot">RANDOM DOT</string>
+    <string name="clear_dot">CLEAR DOT</string>
+    <string name="edit_dot"><font color="white"><b>Edit dot</b></font></string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
