@@ -5,9 +5,11 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringDef;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Toast;
 
 import kmitl.lab05.tiwipab58070044.simplemydot.model.Dot;
 import kmitl.lab05.tiwipab58070044.simplemydot.model.Dots;
@@ -65,9 +67,9 @@ public class DotView extends View {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        startTime = System.currentTimeMillis();
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
+                startTime = System.currentTimeMillis();
                 this.onDotViewPressListener
                         .onDotViewPressed(
                                 (int)event.getX(),
@@ -78,7 +80,9 @@ public class DotView extends View {
                 if(endTime < 1000 && position != -1){
                     handler.removeCallbacks(runnable);
                     dots.removeBy(position);
+                    Toast.makeText(getContext(), String.valueOf(endTime), Toast.LENGTH_SHORT).show();
                 }
+                return true;
         }
         return false;
     }
