@@ -3,13 +3,11 @@ package kmitl.lab05.tiwipab58070044.simplemydot.view;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.support.annotation.StringDef;
 import android.util.AttributeSet;
+import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Toast;
 
 import kmitl.lab05.tiwipab58070044.simplemydot.model.Dot;
 import kmitl.lab05.tiwipab58070044.simplemydot.model.Dots;
@@ -20,12 +18,31 @@ import kmitl.lab05.tiwipab58070044.simplemydot.model.Dots;
 
 public class DotView extends View {
 
-    private Paint paint;
+    private Paint paint = null;
     private Dots dots = null;
-    private Runnable runnable = null;
-    private Handler handler = null;
-    private int position = -1;
-    private long startTime = 0;
+    private GestureDetector gestureDetector = new GestureDetector(getContext(), new GestureDetector.SimpleOnGestureListener() {
+        @Override
+        public boolean onDown(MotionEvent e) {
+            return true;
+        }
+
+        @Override
+        public boolean onSingleTapUp(MotionEvent e) {
+            DotView.this.onDotViewPressListener.onDotViewPressed((int) e.getX(), (int) e.getY());
+            return super.onSingleTapUp(e);
+        }
+
+        @Override
+        public void onLongPress(MotionEvent e) {
+            DotView.this.onDotViewPressListener.onDotViewLongPressed((int) e.getX(), (int) e.getY());
+        }
+
+    });
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        return gestureDetector.onTouchEvent(event);
+    }
 
     @Override
     protected void onDraw(Canvas canvas) {
@@ -45,46 +62,14 @@ public class DotView extends View {
 
     public interface OnDotViewPressListener{
         void onDotViewPressed(int x, int y);
-    }
 
-    public void setRunnable(Runnable runnable) {
-        this.runnable = runnable;
-    }
-
-    public void setHandler(Handler handler) {
-        this.handler = handler;
-    }
-
-    public void setPosition(int position) {
-        this.position = position;
+        void onDotViewLongPressed(int x, int y);
     }
 
     private OnDotViewPressListener onDotViewPressListener;
     public void setOnDotViewPressListener(
             OnDotViewPressListener onDotViewPressListener) {
         this.onDotViewPressListener = onDotViewPressListener;
-    }
-
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                startTime = System.currentTimeMillis();
-                this.onDotViewPressListener
-                        .onDotViewPressed(
-                                (int)event.getX(),
-                                (int)event.getY());
-                return true;
-            case MotionEvent.ACTION_UP:
-                long endTime = System.currentTimeMillis() - startTime;
-                if(endTime < 1000 && position != -1){
-                    handler.removeCallbacks(runnable);
-                    dots.removeBy(position);
-                    Toast.makeText(getContext(), String.valueOf(endTime), Toast.LENGTH_SHORT).show();
-                }
-                return true;
-        }
-        return false;
     }
 
     public DotView(Context context) {

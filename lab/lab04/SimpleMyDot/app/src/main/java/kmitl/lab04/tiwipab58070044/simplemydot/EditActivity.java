@@ -66,7 +66,6 @@ public class EditActivity extends AppCompatActivity implements DotView.OnDotView
     }
 
     @Override
-    
     public void onDotViewPressed(int x, int y) {
         int centerX = editDotView.getCurrentX();
         int centerY = editDotView.getCurrentY();
