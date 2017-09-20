@@ -1,5 +1,8 @@
 package kmitl.lab05.tiwipab58070044.simplemydot.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,7 +10,35 @@ import java.util.List;
  * Created by tiwip on 9/17/2017.
  */
 
-public class Dots {
+public class Dots implements Parcelable{
+
+    public Dots() {}
+
+    protected Dots(Parcel in) {
+        allDot = in.createTypedArrayList(Dot.CREATOR);
+    }
+
+    public static final Creator<Dots> CREATOR = new Creator<Dots>() {
+        @Override
+        public Dots createFromParcel(Parcel in) {
+            return new Dots(in);
+        }
+
+        @Override
+        public Dots[] newArray(int size) {
+            return new Dots[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeTypedList(allDot);
+    }
 
     public interface OnDotsChangeListener {
         public void onDotsChanged(Dots dots);

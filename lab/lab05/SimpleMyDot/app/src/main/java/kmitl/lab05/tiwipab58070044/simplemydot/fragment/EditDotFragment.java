@@ -1,21 +1,23 @@
 package kmitl.lab05.tiwipab58070044.simplemydot.fragment;
 
 
-import android.app.FragmentManager;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import info.hoang8f.widget.FButton;
 import kmitl.lab05.tiwipab58070044.simplemydot.R;
 import kmitl.lab05.tiwipab58070044.simplemydot.model.Dot;
 import kmitl.lab05.tiwipab58070044.simplemydot.view.ColorPicker;
 import kmitl.lab05.tiwipab58070044.simplemydot.view.DotView;
-import kmitl.lab05.tiwipab58070044.simplemydot.view.EditDotView;
+import kmitl.lab05.tiwipab58070044.simplemydot.view.PreviewDot;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -29,10 +31,26 @@ public class EditDotFragment extends Fragment implements ColorPicker.OnColorPick
 
     private FButton fbtn_ok = null, fbtn_cancel = null;
     private Dot dot = null;
-    private EditDotView editDotView = null;
+    private PreviewDot previewDot = null;
     private ColorPicker colorPicker= null;
     private EditDotFragmentListener listener = null;
+    private EditText et_pointX = null, et_pointY = null, et_radius = null;
     private int position = -1;
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable("dot", dot);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        if(savedInstanceState != null){
+            dot = savedInstanceState.getParcelable("dot");
+        }
+    }
 
     public void setListener(EditDotFragmentListener listener) {
         this.listener = listener;
@@ -63,11 +81,11 @@ public class EditDotFragment extends Fragment implements ColorPicker.OnColorPick
 
     @Override
     public void onDotViewPressed(int x, int y) {
-        int centerX = editDotView.getCurrentX();
-        int centerY = editDotView.getCurrentY();
+        int centerX = previewDot.getCurrentX();
+        int centerY = previewDot.getCurrentY();
         double distance = Math.sqrt(Math.pow(centerX - x, 2)) +
                 Math.sqrt(Math.pow(centerY - y, 2));
-        if(distance <= editDotView.getRadius()){
+        if(distance <= previewDot.getRadius()){
             colorPicker.showPalette();
         }
     }
@@ -81,10 +99,18 @@ public class EditDotFragment extends Fragment implements ColorPicker.OnColorPick
         fbtn_ok = (FButton) rootView.findViewById(R.id.fbtn_ok);
         fbtn_cancel = (FButton) rootView.findViewById(R.id.fbtn_cancel);
 
-        editDotView = (EditDotView) rootView.findViewById(R.id.editDotView);
-        editDotView.setOnDotViewPressListener(EditDotFragment.this);
-        editDotView.setColor(dot.getColor());
-        editDotView.setRadius(dot.getRadius());
+        previewDot = (PreviewDot) rootView.findViewById(R.id.previewDot);
+        previewDot.setOnDotViewPressListener(EditDotFragment.this);
+        previewDot.setColor(dot.getColor());
+        previewDot.setRadius(dot.getRadius());
+
+        et_pointX = (EditText) rootView.findViewById(R.id.et_x);
+        et_pointY = (EditText) rootView.findViewById(R.id.et_y);
+        et_radius = (EditText) rootView.findViewById(R.id.et_r);
+
+        et_pointX.setText(String.valueOf(dot.getCenterX()));
+        et_pointY.setText(String.valueOf(dot.getCenterY()));
+        et_radius.setText(String.valueOf(dot.getRadius()));
     }
 
     private void setWidgetEventListener(){
@@ -92,12 +118,17 @@ public class EditDotFragment extends Fragment implements ColorPicker.OnColorPick
         fbtn_ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dot.setColor(editDotView.getColor());
-                listener.EditDotFinished(dot, position);
-                getActivity().getSupportFragmentManager()
-                        .beginTransaction()
-                        .remove(EditDotFragment.this)
-                        .commit();
+                if(previewDot.getRadius() > 0) {
+                    dot.setColor(previewDot.getColor());
+                    dot.setRadius(previewDot.getRadius());
+                    listener.EditDotFinished(dot, position);
+                    getActivity().getSupportFragmentManager()
+                            .beginTransaction()
+                            .remove(EditDotFragment.this)
+                            .commit();
+                } else {
+                    Toast.makeText(getActivity(), "Radius must be greater than 0", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -108,6 +139,28 @@ public class EditDotFragment extends Fragment implements ColorPicker.OnColorPick
                         .beginTransaction()
                         .remove(EditDotFragment.this)
                         .commit();
+            }
+        });
+
+        et_radius.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if(editable.length() > 0) {
+                    previewDot.setRadius(Integer.valueOf(editable.toString()));
+                } else {
+                    previewDot.setRadius(0);
+                }
+                previewDot.invalidate();
             }
         });
     }
@@ -124,8 +177,8 @@ public class EditDotFragment extends Fragment implements ColorPicker.OnColorPick
 
     @Override
     public void onOkTouched(int color) {
-        editDotView.setColor(color);
-        editDotView.invalidate();
+        previewDot.setColor(color);
+        previewDot.invalidate();
     }
 
     @Override

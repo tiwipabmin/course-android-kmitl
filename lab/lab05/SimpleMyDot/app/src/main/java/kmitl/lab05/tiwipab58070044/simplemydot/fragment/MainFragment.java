@@ -36,6 +36,8 @@ public class MainFragment extends Fragment implements DotView.OnDotViewPressList
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        dots = new Dots();
     }
 
     @Override
@@ -55,7 +57,6 @@ public class MainFragment extends Fragment implements DotView.OnDotViewPressList
         dotView = (DotView) rootView.findViewById(R.id.dotView);
         dotView.setOnDotViewPressListener(this);
 
-        dots = new Dots();
         dots.setListener(this);
 
         btn_randomDot = (Button) rootView.findViewById(R.id.btn_randomDot);

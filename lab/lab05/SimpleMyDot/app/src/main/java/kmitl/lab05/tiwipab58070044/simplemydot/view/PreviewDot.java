@@ -9,13 +9,11 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
-import kmitl.lab05.tiwipab58070044.simplemydot.model.Dot;
-
 /**
- * Created by tiwip on 9/19/2017.
+ * Created by tiwip on 9/20/2017.
  */
 
-public class EditDotView extends View {
+public class PreviewDot extends View {
 
     private DotView.OnDotViewPressListener onDotViewPressListener;
 
@@ -76,17 +74,17 @@ public class EditDotView extends View {
         return radius;
     }
 
-    public EditDotView(Context context) {
+    public PreviewDot(Context context) {
         super(context);
         paint = new Paint();
     }
 
-    public EditDotView(Context context, @Nullable AttributeSet attrs) {
+    public PreviewDot(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         paint = new Paint();
     }
 
-    public EditDotView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public PreviewDot(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         paint = new Paint();
     }
