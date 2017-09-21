@@ -21,7 +21,7 @@ import kmitl.lab05.tiwipab58070044.simplemydot.view.DotView;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MainFragment extends Fragment implements DotView.OnDotViewPressListener, Dots.OnDotsChangeListener, EditDotFragment.EditDotFragmentListener{
+public class MainFragment extends Fragment implements DotView.OnDotViewPressListener, Dots.OnDotsChangeListener, EditDotFragment.EditDotFragmentListener {
 
 
     public MainFragment() {
@@ -32,6 +32,28 @@ public class MainFragment extends Fragment implements DotView.OnDotViewPressList
     private DotView dotView = null;
     private FragmentManager fragmentManager = null;
     private Button btn_randomDot = null, btn_clearDot = null;
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable("dots", dots);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        if (savedInstanceState != null) {
+            dots = savedInstanceState.getParcelable("dots");
+            dotView.setDots(dots);
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+//        dotView.invalidate();
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -52,7 +74,7 @@ public class MainFragment extends Fragment implements DotView.OnDotViewPressList
         return rootView;
     }
 
-    private void bindWidget(View rootView){
+    private void bindWidget(View rootView) {
 
         dotView = (DotView) rootView.findViewById(R.id.dotView);
         dotView.setOnDotViewPressListener(this);
@@ -65,7 +87,7 @@ public class MainFragment extends Fragment implements DotView.OnDotViewPressList
         fragmentManager = getActivity().getSupportFragmentManager();
     }
 
-    private void setWidgetEventListener(){
+    private void setWidgetEventListener() {
         btn_randomDot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -139,7 +161,7 @@ public class MainFragment extends Fragment implements DotView.OnDotViewPressList
 
     @Override
     public void EditDotFinished(Dot dot, int position) {
-        if(position != -1) {
+        if (position != -1) {
             dots.getAllDot().set(position, dot);
             dotView.invalidate();
         }
