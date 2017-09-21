@@ -15,8 +15,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        fragmentManager = getSupportFragmentManager();
+
         if(savedInstanceState == null) {
-            fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction()
                     .add(R.id.frameLayout, new MainFragment())
                     .addToBackStack("simpleMyDotFragment")

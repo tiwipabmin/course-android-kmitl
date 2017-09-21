@@ -52,7 +52,8 @@ public class MainFragment extends Fragment implements DotView.OnDotViewPressList
     @Override
     public void onResume() {
         super.onResume();
-//        dotView.invalidate();
+        dots.setListener(this);
+        dotView.invalidate();
     }
 
     @Override
