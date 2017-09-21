@@ -119,6 +119,8 @@ public class EditDotFragment extends Fragment implements ColorPicker.OnColorPick
             @Override
             public void onClick(View view) {
                 if(previewDot.getRadius() > 0) {
+                    dot.setCenterX(Integer.valueOf(et_pointX.getText().toString().trim()));
+                    dot.setCenterY(Integer.valueOf(et_pointY.getText().toString().trim()));
                     dot.setColor(previewDot.getColor());
                     dot.setRadius(previewDot.getRadius());
                     listener.EditDotFinished(dot, position);
@@ -156,7 +158,7 @@ public class EditDotFragment extends Fragment implements ColorPicker.OnColorPick
             @Override
             public void afterTextChanged(Editable editable) {
                 if(editable.length() > 0) {
-                    previewDot.setRadius(Integer.valueOf(editable.toString()));
+                    previewDot.setRadius(Integer.valueOf(editable.toString().trim()));
                 } else {
                     previewDot.setRadius(0);
                 }
