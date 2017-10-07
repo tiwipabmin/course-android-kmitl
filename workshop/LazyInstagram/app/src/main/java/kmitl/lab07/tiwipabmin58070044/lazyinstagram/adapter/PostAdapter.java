@@ -28,16 +28,12 @@ class Holder extends RecyclerView.ViewHolder{
 public class PostAdapter extends
         RecyclerView.Adapter<Holder> {
 
-    private String[] data = {
-            "http://api.learn2crack.com/android/images/donut.png",
-            "http://api.learn2crack.com/android/images/eclair.png",
-            "http://api.learn2crack.com/android/images/froyo.png",
-            "http://api.learn2crack.com/android/images/ginger.png"
-    };
+    private String[] data;
 
     private Context context;
-    public PostAdapter(Context context) {
+    public PostAdapter(Context context, String[] data) {
         this.context = context;
+        this.data = data;
     }
 
     @Override
