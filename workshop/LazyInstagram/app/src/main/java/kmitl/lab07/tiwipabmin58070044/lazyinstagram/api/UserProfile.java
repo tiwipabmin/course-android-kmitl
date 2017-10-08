@@ -1,5 +1,8 @@
 package kmitl.lab07.tiwipabmin58070044.lazyinstagram.api;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by student on 10/6/2017 AD.
  */
@@ -13,6 +16,15 @@ public class UserProfile {
     private int post;
     private boolean isFollow;
     private String urlProfile;
+    private List<PostsModel> posts;
+
+    public List<PostsModel> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(List<PostsModel> posts) {
+        this.posts = posts;
+    }
 
     public int getPost() {
         return post;

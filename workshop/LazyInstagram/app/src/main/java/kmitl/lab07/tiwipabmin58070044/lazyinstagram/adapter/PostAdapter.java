@@ -6,10 +6,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import java.util.List;
 
 import kmitl.lab07.tiwipabmin58070044.lazyinstagram.R;
+import kmitl.lab07.tiwipabmin58070044.lazyinstagram.api.PostsModel;
 
 /**
  * Created by student on 10/6/2017 AD.
@@ -18,30 +21,57 @@ import kmitl.lab07.tiwipabmin58070044.lazyinstagram.R;
 class Holder extends RecyclerView.ViewHolder{
 
     public ImageView image;
+    public TextView tvComment, tvLike;
+    public int itemLayout;
 
     public Holder(View itemView) {
         super(itemView);
-        image = (ImageView) itemView.findViewById(R.id.ivImage);
+        if(itemView.getId() == R.id.grid) {
+            image = (ImageView) itemView.findViewById(R.id.ivImage);
+
+            itemLayout = PostAdapter.GRID;
+        } else if (itemView.getId() == R.id.list) {
+            image = (ImageView) itemView.findViewById(R.id.ivImage);
+            tvComment = (TextView) itemView.findViewById(R.id.tvComment);
+            tvLike = (TextView) itemView.findViewById(R.id.tvLike);
+
+            itemLayout = PostAdapter.LIST;
+        }
+
     }
 }
 
 public class PostAdapter extends
         RecyclerView.Adapter<Holder> {
 
-    private String[] data;
+    public static final int GRID = 0;
+    public static final int LIST = 1;
 
+    private List<PostsModel> posts;
     private Context context;
-    public PostAdapter(Context context, String[] data) {
+    private int itemLayout;
+
+    public PostAdapter(Context context, List<PostsModel> posts) {
         this.context = context;
-        this.data = data;
+        this.posts = posts;
     }
 
     @Override
     public Holder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater =
                 LayoutInflater.from(parent.getContext());
-        View itemView =
-                inflater.inflate(R.layout.post_item, null, false);
+
+        View itemView = null;
+
+        if(viewType == 0) {
+            itemView =
+                    inflater.inflate(R.layout.post_item, null, false);
+            itemView.setId(R.id.grid);
+        } else if (viewType == 1){
+            itemView =
+                    inflater.inflate(R.layout.list_item, null, false);
+            itemView.setId(R.id.list);
+        }
 
         Holder holder = new Holder(itemView);
         return holder;
@@ -49,13 +79,25 @@ public class PostAdapter extends
 
     @Override
     public void onBindViewHolder(Holder holder, int position) {
-        ImageView image = holder.image;
-        Glide.with(context).load(data[position]).into(image);
+
+        if(holder.itemLayout == LIST){
+            holder.tvComment.setText(holder.tvComment.getText().toString().concat(String.valueOf(posts.get(position).getComment())));
+            holder.tvLike.setText(holder.tvLike.getText().toString().concat(String.valueOf(posts.get(position).getLike())));
+        }
+        Glide.with(context).load(posts.get(position).getUrl()).into(holder.image);
     }
 
     @Override
     public int getItemCount() {
-        return data.length;
+        return posts.size();
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        return itemLayout;
+    }
+
+    public void setItemLayout(int itemLayout) {
+        this.itemLayout = itemLayout;
+    }
 }

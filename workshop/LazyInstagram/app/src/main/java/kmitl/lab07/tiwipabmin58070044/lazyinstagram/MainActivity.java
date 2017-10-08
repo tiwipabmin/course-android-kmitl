@@ -33,12 +33,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TextView tvUser, tvPost, tvFollowing,
             tvFollower, tvBio;
     private ImageView ivUser;
-    private String[] data = {
-        "http://api.learn2crack.com/android/images/donut.png",
-                "http://api.learn2crack.com/android/images/eclair.png",
-                "http://api.learn2crack.com/android/images/froyo.png",
-                "http://api.learn2crack.com/android/images/ginger.png"
-    };
     private FragmentManager imageFragment;
     private Button btnSwitch;
     private UserProfile userProfile;
@@ -52,11 +46,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnSwitch.setOnClickListener(this);
 
         getUserProfile("cartoon");
-
-        imageFragment = getSupportFragmentManager();
-        imageFragment.beginTransaction()
-                .replace(R.id.imageFragment, new GridFragment().newInstance(data))
-                .commit();
     }
 
     private void bindWidget(){
@@ -80,6 +69,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Glide.with(MainActivity.this)
                 .load(userProfile.getUrlProfile())
                 .into(ivUser);
+
+        imageFragment = getSupportFragmentManager();
+        imageFragment.beginTransaction()
+                .replace(R.id.imageFragment, new GridFragment().newInstance(userProfile.getPosts()))
+                .commit();
     }
 
     private void getUserProfile(String usrName){
@@ -106,12 +100,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if(R.id.btnSwitch == v.getId()){
             switch (btnSwitch.getText().toString()) {
                 case "List": imageFragment.beginTransaction()
-                        .replace(R.id.imageFragment, new ListFragment().newInstance(data))
+                        .replace(R.id.imageFragment, new ListFragment().newInstance(userProfile.getPosts()))
                         .commit();
                     btnSwitch.setText(String.format("%s", "Grid"));
                     break;
                 case "Grid": imageFragment.beginTransaction()
-                        .replace(R.id.imageFragment, new GridFragment().newInstance(data))
+                        .replace(R.id.imageFragment, new GridFragment().newInstance(userProfile.getPosts()))
                         .commit();
                     btnSwitch.setText(String.format("%s", "List"));
                     break;
