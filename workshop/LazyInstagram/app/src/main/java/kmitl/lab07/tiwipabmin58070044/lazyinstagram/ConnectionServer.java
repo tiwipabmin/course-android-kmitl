@@ -13,6 +13,7 @@ public class ConnectionServer {
 
     private static ConnectionServer connectionServer;
     private Retrofit retrofit;
+    private LazyInstagramApi lazyInstagramApi;
 
     private ConnectionServer(){
         OkHttpClient client = new OkHttpClient
@@ -26,6 +27,8 @@ public class ConnectionServer {
                 .addConverterFactory(GsonConverterFactory.create())
                 //        ScalarsConverterFactory.create() มองค่าเดียว นั่นคือ String Integer Float
                 .build();
+
+        lazyInstagramApi = retrofit.create(LazyInstagramApi.class);
     }
 
     public static ConnectionServer getConnectionServer(){
@@ -37,5 +40,9 @@ public class ConnectionServer {
 
     public Retrofit getRetrofit() {
         return retrofit;
+    }
+
+    public LazyInstagramApi getLazyInstagramApi() {
+        return lazyInstagramApi;
     }
 }

@@ -28,7 +28,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
     private TextView tvUser, tvPost, tvFollowing,
             tvFollower, tvBio;
@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     };
     private FragmentManager imageFragment;
     private Button btnSwitch;
+    private UserProfile userProfile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,11 +49,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         bindWidget();
-        setWidgetEventListener();
+        btnSwitch.setOnClickListener(this);
 
-        ConnectionServer connectionSever = ConnectionServer.getConnectionServer();
-
-        getUserProfile(connectionSever.getRetrofit(), "cartoon");
+        getUserProfile("cartoon");
 
         imageFragment = getSupportFragmentManager();
         imageFragment.beginTransaction()
@@ -71,47 +70,27 @@ public class MainActivity extends AppCompatActivity {
         btnSwitch = (Button) findViewById(R.id.btnSwitch);
     }
 
-    private void setWidgetEventListener(){
+    private void showProfile(UserProfile userProfile){
 
-        btnSwitch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                switch (btnSwitch.getText().toString()) {
-                    case "List": imageFragment.beginTransaction()
-                            .replace(R.id.imageFragment, new ListFragment().newInstance(data))
-                            .commit();
-                        btnSwitch.setText(String.format("%s", "Grid"));
-                        break;
-                    case "Grid": imageFragment.beginTransaction()
-                            .replace(R.id.imageFragment, new GridFragment().newInstance(data))
-                            .commit();
-                        btnSwitch.setText(String.format("%s", "List"));
-                        break;
-                }
-            }
-        });
+        tvUser.setText("@".concat(userProfile.getUser()));
+        tvPost.setText(String.valueOf(userProfile.getPost()));
+        tvFollowing.setText(String.valueOf(userProfile.getFollowing()));
+        tvFollower.setText(String.valueOf(userProfile.getFollower()));
+        tvBio.setText(userProfile.getBio());
+        Glide.with(MainActivity.this)
+                .load(userProfile.getUrlProfile())
+                .into(ivUser);
     }
 
-    private void getUserProfile(Retrofit retrofit, String usrName){
+    private void getUserProfile(String usrName){
 
-        LazyInstagramApi lazyInstagramApi =
-                retrofit.create(LazyInstagramApi.class);
-
-        Call<UserProfile> call = lazyInstagramApi.getProfile(usrName);
+        Call<UserProfile> call = ConnectionServer.getConnectionServer().getLazyInstagramApi().getProfile(usrName);
         call.enqueue(new Callback<UserProfile>() {
             @Override
             public void onResponse(Call<UserProfile> call, Response<UserProfile> response) {
                 if(response.isSuccessful()){
-                    UserProfile userProfile = response.body();
-
-                    tvUser.setText("@" + userProfile.getUser());
-                    tvPost.setText(String.valueOf(userProfile.getPost()));
-                    tvFollowing.setText(String.valueOf(userProfile.getFollowing()));
-                    tvFollower.setText(String.valueOf(userProfile.getFollower()));
-                    tvBio.setText(userProfile.getBio());
-                    Glide.with(MainActivity.this)
-                            .load(userProfile.getUrlProfile())
-                            .into(ivUser);
+                    userProfile = response.body();
+                    showProfile(userProfile);
                 }
             }
 
@@ -120,5 +99,23 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    public void onClick(View v) {
+        if(R.id.btnSwitch == v.getId()){
+            switch (btnSwitch.getText().toString()) {
+                case "List": imageFragment.beginTransaction()
+                        .replace(R.id.imageFragment, new ListFragment().newInstance(data))
+                        .commit();
+                    btnSwitch.setText(String.format("%s", "Grid"));
+                    break;
+                case "Grid": imageFragment.beginTransaction()
+                        .replace(R.id.imageFragment, new GridFragment().newInstance(data))
+                        .commit();
+                    btnSwitch.setText(String.format("%s", "List"));
+                    break;
+            }
+        }
     }
 }
