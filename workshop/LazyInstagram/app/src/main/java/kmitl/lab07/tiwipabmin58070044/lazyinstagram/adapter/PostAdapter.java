@@ -96,16 +96,10 @@ public class PostAdapter extends
     public void onBindViewHolder(Holder holder, int position) {
 
         if(holder.itemLayout == LIST){
-            holder.tvComment.setText(holder
-                    .tvComment
-                    .getText()
-                    .toString()
+            holder.tvComment.setText("Comment : \n\n"
                     .concat(String.valueOf(posts.get(position).getComment())));
 
-            holder.tvLike.setText(holder
-                    .tvLike
-                    .getText()
-                    .toString()
+            holder.tvLike.setText("Like : \n\n"
                     .concat(String.valueOf(posts.get(position).getLike())));
         }
         Glide.with(context).load(posts

@@ -1,5 +1,6 @@
 package kmitl.lab07.tiwipabmin58070044.lazyinstagram;
 
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -14,16 +15,18 @@ import com.bumptech.glide.Glide;
 
 import kmitl.lab07.tiwipabmin58070044.lazyinstagram.adapter.PostAdapter;
 import kmitl.lab07.tiwipabmin58070044.lazyinstagram.api.UserProfile;
+import kmitl.lab07.tiwipabmin58070044.lazyinstagram.fragment.SwitchUserDialogFragment;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener{
+public class MainActivity extends AppCompatActivity
+        implements View.OnClickListener, SwitchUserDialogFragment.DialogListener{
 
     private TextView tvUser, tvPost, tvFollowing,
             tvFollower, tvBio;
     private ImageView ivUser;
-    private Button btnSwitch;
+    private Button btnSwitch, btnSwitchUser;
     private UserProfile userProfile;
     private RecyclerView recyclerView;
     private PostAdapter postAdapter;
@@ -35,6 +38,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         bindWidget();
         btnSwitch.setOnClickListener(this);
+        btnSwitchUser.setOnClickListener(this);
 
         getUserProfile("cartoon");
     }
@@ -48,13 +52,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ivUser = (ImageView) findViewById(R.id.ivUser);
         tvBio = (TextView) findViewById(R.id.tvBio);
         btnSwitch = (Button) findViewById(R.id.btnSwitch);
+        btnSwitchUser = (Button) findViewById(R.id.btnSwitchUser);
 
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
     }
 
-    private void initialInstance(){
-
-    }
+    private void initialInstance(){}
 
     private void showProfile(UserProfile userProfile){
 
@@ -70,6 +73,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         postAdapter = new PostAdapter(this, userProfile.getPosts());
         recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
         recyclerView.setAdapter(postAdapter);
+    }
+
+    private void showSwitchUserDialog(){
+        DialogFragment switchUser = new SwitchUserDialogFragment();
+        switchUser.show(getSupportFragmentManager(), "switchUser");
     }
 
     private void getUserProfile(String usrName){
@@ -106,6 +114,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     btnSwitch.setText(String.format("%s", "List"));
                     break;
             }
+        } else if(R.id.btnSwitchUser == v.getId()) {
+            showSwitchUserDialog();
         }
+    }
+
+    @Override
+    public void onSignInClicked(String username) {
+        getUserProfile(username);
     }
 }
