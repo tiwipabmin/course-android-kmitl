@@ -27,13 +27,18 @@ class Holder extends RecyclerView.ViewHolder{
     public Holder(View itemView) {
         super(itemView);
         if(itemView.getId() == R.id.grid) {
-            image = (ImageView) itemView.findViewById(R.id.ivImage);
+            image =
+                    (ImageView) itemView.findViewById(R.id.ivImage);
 
             itemLayout = PostAdapter.GRID;
+
         } else if (itemView.getId() == R.id.list) {
-            image = (ImageView) itemView.findViewById(R.id.ivImage);
-            tvComment = (TextView) itemView.findViewById(R.id.tvComment);
-            tvLike = (TextView) itemView.findViewById(R.id.tvLike);
+            image =
+                    (ImageView) itemView.findViewById(R.id.ivImage);
+            tvComment =
+                    (TextView) itemView.findViewById(R.id.tvComment);
+            tvLike =
+                    (TextView) itemView.findViewById(R.id.tvLike);
 
             itemLayout = PostAdapter.LIST;
         }
@@ -49,10 +54,20 @@ public class PostAdapter extends
 
     private List<PostsModel> posts;
     private Context context;
-    private int itemLayout;
+    private int itemLayout = GRID;
 
     public PostAdapter(Context context, List<PostsModel> posts) {
         this.context = context;
+        this.posts = posts;
+    }
+
+    public PostAdapter(Context context) {
+        this.context = context;
+    }
+
+    public void PostAdapter(){}
+
+    public void setPosts(List<PostsModel> posts) {
         this.posts = posts;
     }
 
@@ -81,10 +96,22 @@ public class PostAdapter extends
     public void onBindViewHolder(Holder holder, int position) {
 
         if(holder.itemLayout == LIST){
-            holder.tvComment.setText(holder.tvComment.getText().toString().concat(String.valueOf(posts.get(position).getComment())));
-            holder.tvLike.setText(holder.tvLike.getText().toString().concat(String.valueOf(posts.get(position).getLike())));
+            holder.tvComment.setText(holder
+                    .tvComment
+                    .getText()
+                    .toString()
+                    .concat(String.valueOf(posts.get(position).getComment())));
+
+            holder.tvLike.setText(holder
+                    .tvLike
+                    .getText()
+                    .toString()
+                    .concat(String.valueOf(posts.get(position).getLike())));
         }
-        Glide.with(context).load(posts.get(position).getUrl()).into(holder.image);
+        Glide.with(context).load(posts
+                .get(position)
+                .getUrl())
+                .into(holder.image);
     }
 
     @Override

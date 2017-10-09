@@ -1,7 +1,5 @@
 package kmitl.lab07.tiwipabmin58070044.lazyinstagram;
 
-import android.support.constraint.ConstraintLayout;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -9,33 +7,26 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
 import kmitl.lab07.tiwipabmin58070044.lazyinstagram.adapter.PostAdapter;
-import kmitl.lab07.tiwipabmin58070044.lazyinstagram.api.LazyInstagramApi;
 import kmitl.lab07.tiwipabmin58070044.lazyinstagram.api.UserProfile;
-import kmitl.lab07.tiwipabmin58070044.lazyinstagram.fragment.GridFragment;
-import kmitl.lab07.tiwipabmin58070044.lazyinstagram.fragment.ListFragment;
-import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
     private TextView tvUser, tvPost, tvFollowing,
             tvFollower, tvBio;
     private ImageView ivUser;
-    private FragmentManager imageFragment;
     private Button btnSwitch;
     private UserProfile userProfile;
+    private RecyclerView recyclerView;
+    private PostAdapter postAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +48,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ivUser = (ImageView) findViewById(R.id.ivUser);
         tvBio = (TextView) findViewById(R.id.tvBio);
         btnSwitch = (Button) findViewById(R.id.btnSwitch);
+
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+    }
+
+    private void initialInstance(){
+
     }
 
     private void showProfile(UserProfile userProfile){
@@ -70,10 +67,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .load(userProfile.getUrlProfile())
                 .into(ivUser);
 
-        imageFragment = getSupportFragmentManager();
-        imageFragment.beginTransaction()
-                .replace(R.id.imageFragment, new GridFragment().newInstance(userProfile.getPosts()))
-                .commit();
+        postAdapter = new PostAdapter(this, userProfile.getPosts());
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
+        recyclerView.setAdapter(postAdapter);
     }
 
     private void getUserProfile(String usrName){
@@ -99,14 +95,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         if(R.id.btnSwitch == v.getId()){
             switch (btnSwitch.getText().toString()) {
-                case "List": imageFragment.beginTransaction()
-                        .replace(R.id.imageFragment, new ListFragment().newInstance(userProfile.getPosts()))
-                        .commit();
+                case "List":
+                    recyclerView.setLayoutManager(new LinearLayoutManager(this));
+                    postAdapter.setItemLayout(PostAdapter.LIST);
                     btnSwitch.setText(String.format("%s", "Grid"));
                     break;
-                case "Grid": imageFragment.beginTransaction()
-                        .replace(R.id.imageFragment, new GridFragment().newInstance(userProfile.getPosts()))
-                        .commit();
+                case "Grid":
+                    recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
+                    postAdapter.setItemLayout(PostAdapter.GRID);
                     btnSwitch.setText(String.format("%s", "List"));
                     break;
             }
