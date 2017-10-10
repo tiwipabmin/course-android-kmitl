@@ -10,10 +10,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
+import java.util.List;
+
 import kmitl.lab07.tiwipabmin58070044.lazyinstagram.adapter.PostAdapter;
+import kmitl.lab07.tiwipabmin58070044.lazyinstagram.api.PostsModel;
 import kmitl.lab07.tiwipabmin58070044.lazyinstagram.api.UserProfile;
 import kmitl.lab07.tiwipabmin58070044.lazyinstagram.fragment.SwitchUserDialogFragment;
 import retrofit2.Call;
@@ -21,7 +25,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity
-        implements View.OnClickListener, SwitchUserDialogFragment.DialogListener{
+        implements View.OnClickListener, SwitchUserDialogFragment.DialogListener, PostAdapter.OnViewPressedListener{
 
     private TextView tvUser, tvPost, tvFollowing,
             tvFollower, tvBio;
@@ -30,6 +34,7 @@ public class MainActivity extends AppCompatActivity
     private UserProfile userProfile;
     private RecyclerView recyclerView;
     private PostAdapter postAdapter;
+    private List<PostsModel> posts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +75,10 @@ public class MainActivity extends AppCompatActivity
                 .load(userProfile.getUrlProfile())
                 .into(ivUser);
 
-        postAdapter = new PostAdapter(this, userProfile.getPosts());
+        posts = userProfile.getPosts();
+
+        postAdapter = new PostAdapter(this, posts);
+        postAdapter.setListener(MainActivity.this);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
         recyclerView.setAdapter(postAdapter);
     }
@@ -122,5 +130,10 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onSignInClicked(String username) {
         getUserProfile(username);
+    }
+
+    @Override
+    public void OnLongPressedListener(int position) {
+        Toast.makeText(MainActivity.this, String.valueOf(posts.get(position).getLike()), Toast.LENGTH_SHORT).show();
     }
 }
