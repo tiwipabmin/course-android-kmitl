@@ -41,9 +41,9 @@ class Holder extends RecyclerView.ViewHolder {
             image =
                     (ImageView) itemView.findViewById(R.id.ivImage);
             tvComment =
-                    (TextView) itemView.findViewById(R.id.tvComment);
+                    (TextView) itemView.findViewById(R.id.tvComments);
             tvLike =
-                    (TextView) itemView.findViewById(R.id.tvLike);
+                    (TextView) itemView.findViewById(R.id.tvLikes);
 
             itemLayout = PostAdapter.LIST;
         }
@@ -114,11 +114,9 @@ public class PostAdapter extends
                 .into(holder.image);
 
         if (holder.itemLayout == LIST) {
-            holder.tvComment.setText("Comment : \n\n"
-                    .concat(String.valueOf(posts.get(position).getComment())));
+            holder.tvComment.setText(String.valueOf(posts.get(position).getComment()));
 
-            holder.tvLike.setText("Like : \n\n"
-                    .concat(String.valueOf(posts.get(position).getLike())));
+            holder.tvLike.setText(String.valueOf(posts.get(position).getLike()));
         } else {
             setWidgetEventListener(holder, position);
         }

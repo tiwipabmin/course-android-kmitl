@@ -1,5 +1,6 @@
 package kmitl.lab07.tiwipabmin58070044.lazyinstagram;
 
+import android.app.Dialog;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -19,6 +20,7 @@ import java.util.List;
 import kmitl.lab07.tiwipabmin58070044.lazyinstagram.adapter.PostAdapter;
 import kmitl.lab07.tiwipabmin58070044.lazyinstagram.api.PostsModel;
 import kmitl.lab07.tiwipabmin58070044.lazyinstagram.api.UserProfile;
+import kmitl.lab07.tiwipabmin58070044.lazyinstagram.fragment.DisplayImageDialogFragment;
 import kmitl.lab07.tiwipabmin58070044.lazyinstagram.fragment.SwitchUserDialogFragment;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -80,6 +82,8 @@ public class MainActivity extends AppCompatActivity
         postAdapter = new PostAdapter(this, posts);
         postAdapter.setListener(MainActivity.this);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
+        postAdapter.setItemLayout(PostAdapter.GRID);
+        btnSwitch.setText(String.format("%s", "List"));
         recyclerView.setAdapter(postAdapter);
     }
 
@@ -134,6 +138,9 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void OnLongPressedListener(int position) {
-        Toast.makeText(MainActivity.this, String.valueOf(posts.get(position).getLike()), Toast.LENGTH_SHORT).show();
+        DialogFragment displayImage =
+                new DisplayImageDialogFragment()
+                        .newInstance(posts.get(position), userProfile.getUrlProfile(), userProfile.getUser());
+        displayImage.show(getSupportFragmentManager(), "displayImage");
     }
 }
