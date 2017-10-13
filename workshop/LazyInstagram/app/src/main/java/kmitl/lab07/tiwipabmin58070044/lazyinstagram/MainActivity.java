@@ -142,5 +142,14 @@ public class MainActivity extends AppCompatActivity
                 new DisplayImageDialogFragment()
                         .newInstance(posts.get(position), userProfile.getUrlProfile(), userProfile.getUser());
         displayImage.show(getSupportFragmentManager(), "displayImage");
+        postAdapter.setDisplayImage(displayImage);
+    }
+
+    @Override
+    public void OnSingleTapUp(DialogFragment displayImage) {
+        if(displayImage != null) {
+            displayImage.dismiss();
+            postAdapter.setDisplayImage(null);
+        }
     }
 }

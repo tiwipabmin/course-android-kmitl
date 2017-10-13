@@ -2,7 +2,6 @@ package kmitl.lab07.tiwipabmin58070044.lazyinstagram.fragment;
 
 import android.app.Dialog;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;

@@ -1,6 +1,7 @@
 package kmitl.lab07.tiwipabmin58070044.lazyinstagram.adapter;
 
 import android.content.Context;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -57,6 +58,8 @@ public class PostAdapter extends
     public interface OnViewPressedListener {
 
         public void OnLongPressedListener(int position);
+
+        public void OnSingleTapUp(DialogFragment displayImage);
     }
 
     public static final int GRID = 0;
@@ -66,10 +69,15 @@ public class PostAdapter extends
     private Context context;
     private int itemLayout = GRID;
     private OnViewPressedListener listener;
+    private DialogFragment displayImage;
 
     public PostAdapter(Context context, List<PostsModel> posts) {
         this.context = context;
         this.posts = posts;
+    }
+
+    public void setDisplayImage(DialogFragment displayImage) {
+        this.displayImage = displayImage;
     }
 
     public void setListener(OnViewPressedListener listener) {
@@ -129,6 +137,17 @@ public class PostAdapter extends
             public boolean onLongClick(View v) {
                 listener.OnLongPressedListener(position);
                 return true;
+            }
+        });
+
+        holder.image.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()){
+                    case MotionEvent.ACTION_UP:
+                        listener.OnSingleTapUp(displayImage);
+                }
+                return false;
             }
         });
 
