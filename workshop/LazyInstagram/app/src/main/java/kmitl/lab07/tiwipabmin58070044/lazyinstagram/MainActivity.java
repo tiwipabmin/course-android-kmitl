@@ -103,11 +103,6 @@ public class MainActivity extends AppCompatActivity
         recyclerView.setAdapter(postAdapter);
     }
 
-    private void showSwitchUserDialog() {
-        DialogFragment switchUser = new SwitchUserDialogFragment();
-        switchUser.show(getSupportFragmentManager(), "switchUser");
-    }
-
     private void getUserProfile(String usrName) {
 
         Call<UserProfile> call = ConnectionServer.getConnectionServer().getLazyInstagramApi().getProfile(usrName);
@@ -145,7 +140,8 @@ public class MainActivity extends AppCompatActivity
                     break;
             }
         } else if (R.id.btnSwitchUser == v.getId()) {
-            showSwitchUserDialog();
+            DialogFragment switchUser = new SwitchUserDialogFragment();
+            switchUser.show(getSupportFragmentManager(), "switchUser");
         }
     }
 

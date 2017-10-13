@@ -23,6 +23,8 @@ public class AlertDialogFragment extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
+                        DialogFragment switchUser = new SwitchUserDialogFragment();
+                        switchUser.show(getActivity().getSupportFragmentManager(), "switchUser");
                     }
                 });
         return alertDialog.create();
