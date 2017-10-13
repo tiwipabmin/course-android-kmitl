@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -28,7 +29,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity
-        implements View.OnClickListener, SwitchUserDialogFragment.DialogListener, PostAdapter.OnViewPressedListener{
+        implements View.OnClickListener, SwitchUserDialogFragment.DialogListener, PostAdapter.OnViewPressedListener {
 
     private TextView tvUser, tvPost, tvFollowing,
             tvFollower, tvBio;
@@ -62,13 +63,13 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        if(savedInstanceState != null){
+        if (savedInstanceState != null) {
             username = savedInstanceState.getString("username");
             formatSwitch = savedInstanceState.getString("formatSwitch");
         }
     }
 
-    private void bindWidget(){
+    private void bindWidget() {
 
         tvUser = (TextView) findViewById(R.id.tvUser);
         tvPost = (TextView) findViewById(R.id.tvPost);
@@ -82,7 +83,7 @@ public class MainActivity extends AppCompatActivity
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
     }
 
-    private void showProfile(UserProfile userProfile){
+    private void showProfile(UserProfile userProfile) {
 
         tvUser.setText("@".concat(userProfile.getUser()));
         tvPost.setText(String.valueOf(userProfile.getPost()));
@@ -102,18 +103,18 @@ public class MainActivity extends AppCompatActivity
         recyclerView.setAdapter(postAdapter);
     }
 
-    private void showSwitchUserDialog(){
+    private void showSwitchUserDialog() {
         DialogFragment switchUser = new SwitchUserDialogFragment();
         switchUser.show(getSupportFragmentManager(), "switchUser");
     }
 
-    private void getUserProfile(String usrName){
+    private void getUserProfile(String usrName) {
 
         Call<UserProfile> call = ConnectionServer.getConnectionServer().getLazyInstagramApi().getProfile(usrName);
         call.enqueue(new Callback<UserProfile>() {
             @Override
             public void onResponse(Call<UserProfile> call, Response<UserProfile> response) {
-                if(response.isSuccessful()){
+                if (response.isSuccessful()) {
                     userProfile = response.body();
                     showProfile(userProfile);
                 }
@@ -128,7 +129,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onClick(View v) {
-        if(R.id.btnSwitch == v.getId()){
+        if (R.id.btnSwitch == v.getId()) {
             switch (btnSwitch.getText().toString()) {
                 case "List":
                     recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -143,14 +144,14 @@ public class MainActivity extends AppCompatActivity
                     formatSwitch = "Grid";
                     break;
             }
-        } else if(R.id.btnSwitchUser == v.getId()) {
+        } else if (R.id.btnSwitchUser == v.getId()) {
             showSwitchUserDialog();
         }
     }
 
     @Override
     public void onSignInClicked(String username) {
-        if(username.equals("android") && username.equals("nature") && username.equals("cartoon")) {
+        if (username.equals("android") || username.equals("nature") || username.equals("cartoon")) {
             this.username = username;
             getUserProfile(this.username);
         } else {
@@ -170,7 +171,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void OnSingleTapUp(DialogFragment displayImage) {
-        if(displayImage != null) {
+        if (displayImage != null) {
             displayImage.dismiss();
             postAdapter.setDisplayImage(null);
         }
