@@ -20,6 +20,7 @@ import java.util.List;
 import kmitl.lab07.tiwipabmin58070044.lazyinstagram.adapter.PostAdapter;
 import kmitl.lab07.tiwipabmin58070044.lazyinstagram.api.PostsModel;
 import kmitl.lab07.tiwipabmin58070044.lazyinstagram.api.UserProfile;
+import kmitl.lab07.tiwipabmin58070044.lazyinstagram.fragment.AlertDialogFragment;
 import kmitl.lab07.tiwipabmin58070044.lazyinstagram.fragment.DisplayImageDialogFragment;
 import kmitl.lab07.tiwipabmin58070044.lazyinstagram.fragment.SwitchUserDialogFragment;
 import retrofit2.Call;
@@ -80,8 +81,6 @@ public class MainActivity extends AppCompatActivity
 
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
     }
-
-    private void initialInstance(){}
 
     private void showProfile(UserProfile userProfile){
 
@@ -151,8 +150,13 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onSignInClicked(String username) {
-        this.username = username;
-        getUserProfile(this.username);
+        if(username.equals("android") && username.equals("nature") && username.equals("cartoon")) {
+            this.username = username;
+            getUserProfile(this.username);
+        } else {
+            DialogFragment alertDialog = new AlertDialogFragment();
+            alertDialog.show(getSupportFragmentManager(), "alertDialog");
+        }
     }
 
     @Override
