@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity
     private RecyclerView recyclerView;
     private PostAdapter postAdapter;
     private List<PostsModel> posts;
+    private String username = "cartoon", formatSwitch = "Grid";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +48,23 @@ public class MainActivity extends AppCompatActivity
         btnSwitch.setOnClickListener(this);
         btnSwitchUser.setOnClickListener(this);
 
-        getUserProfile("cartoon");
+        getUserProfile(username);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("username", username);
+        outState.putString("formatSwitch", formatSwitch);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        if(savedInstanceState != null){
+            username = savedInstanceState.getString("username");
+            formatSwitch = savedInstanceState.getString("formatSwitch");
+        }
     }
 
     private void bindWidget(){
@@ -81,9 +98,8 @@ public class MainActivity extends AppCompatActivity
 
         postAdapter = new PostAdapter(this, posts);
         postAdapter.setListener(MainActivity.this);
-        recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
-        postAdapter.setItemLayout(PostAdapter.GRID);
-        btnSwitch.setText(String.format("%s", "List"));
+        btnSwitch.setText(String.format("%s", formatSwitch));
+        MainActivity.this.onClick(btnSwitch);
         recyclerView.setAdapter(postAdapter);
     }
 
@@ -119,11 +135,13 @@ public class MainActivity extends AppCompatActivity
                     recyclerView.setLayoutManager(new LinearLayoutManager(this));
                     postAdapter.setItemLayout(PostAdapter.LIST);
                     btnSwitch.setText(String.format("%s", "Grid"));
+                    formatSwitch = "List";
                     break;
                 case "Grid":
                     recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
                     postAdapter.setItemLayout(PostAdapter.GRID);
                     btnSwitch.setText(String.format("%s", "List"));
+                    formatSwitch = "Grid";
                     break;
             }
         } else if(R.id.btnSwitchUser == v.getId()) {
@@ -133,7 +151,8 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onSignInClicked(String username) {
-        getUserProfile(username);
+        this.username = username;
+        getUserProfile(this.username);
     }
 
     @Override

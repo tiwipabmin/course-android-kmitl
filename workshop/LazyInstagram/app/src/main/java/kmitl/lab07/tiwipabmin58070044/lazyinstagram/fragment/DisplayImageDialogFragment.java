@@ -39,6 +39,28 @@ public class DisplayImageDialogFragment extends DialogFragment {
         likes = args.getInt("likes");
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("urlUserProfile", urlUserProfile);
+        outState.putString("urlImage", urlImage);
+        outState.putString("username", username);
+        outState.putInt("comments", comments);
+        outState.putInt("likes", likes);
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if(savedInstanceState != null){
+            username = savedInstanceState.getString("username");
+            urlUserProfile = savedInstanceState.getString("urlUserProfile");
+            urlImage = savedInstanceState.getString("urlImage");
+            comments = savedInstanceState.getInt("comments");
+            likes = savedInstanceState.getInt("likes");
+        }
+    }
+
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
