@@ -24,7 +24,7 @@ public class CaptureActivity extends AppCompatActivity {
         indexInBound = getIntent();
         imagePath = indexInBound.getStringExtra("imagePath");
 
-        File imageFile = new File(imagePath);
+        imageFile = new File(imagePath);
 
         iv_ScreenDot = (ImageView) findViewById(R.id.iv_ScreenDots);
         iv_ScreenDot.setImageURI(Uri.fromFile(imageFile));
