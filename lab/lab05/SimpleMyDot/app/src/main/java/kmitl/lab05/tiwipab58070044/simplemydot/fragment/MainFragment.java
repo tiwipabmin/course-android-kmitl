@@ -154,8 +154,8 @@ public class MainFragment extends Fragment implements DotView.OnDotViewPressList
             dots.addDot(dot);
         } else {
             fragmentManager.beginTransaction()
-                    .add(R.id.frameLayout, new EditDotFragment().newInstance(dots.getAllDot().get(position), position, MainFragment.this))
-                    .addToBackStack("simpleMyDotFragment")
+                    .add(R.id.frameLayout, new EditDotFragment().newInstance(dots.getAllDot().get(position), position, MainFragment.this), "EditDotFragment")
+                    .addToBackStack("EditDotFragment")
                     .commit();
         }
     }

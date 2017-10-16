@@ -1,5 +1,6 @@
 package kmitl.lab05.tiwipab58070044.simplemydot;
 
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -19,8 +20,8 @@ public class MainActivity extends AppCompatActivity {
 
         if(savedInstanceState == null) {
             fragmentManager.beginTransaction()
-                    .add(R.id.frameLayout, new MainFragment())
-                    .addToBackStack("simpleMyDotFragment")
+                    .add(R.id.frameLayout, new MainFragment(), "MainFragment")
+                    .addToBackStack("MainFragment")
                     .commit();
         }
     }

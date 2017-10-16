@@ -4,8 +4,10 @@ package kmitl.lab05.tiwipab58070044.simplemydot.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +15,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import info.hoang8f.widget.FButton;
+import kmitl.lab05.tiwipab58070044.simplemydot.MainActivity;
 import kmitl.lab05.tiwipab58070044.simplemydot.R;
 import kmitl.lab05.tiwipab58070044.simplemydot.model.Dot;
 import kmitl.lab05.tiwipab58070044.simplemydot.view.ColorPicker;
@@ -40,6 +43,11 @@ public class EditDotFragment extends Fragment implements ColorPicker.OnColorPick
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+        outState.putInt("x", previewDot.getCurrentX());
+        outState.putInt("y", previewDot.getCurrentY());
+        outState.putInt("radius", previewDot.getRadius());
+        outState.putInt("color", previewDot.getColor());
+        outState.putInt("position", position);
         outState.putParcelable("dot", dot);
     }
 
@@ -48,7 +56,19 @@ public class EditDotFragment extends Fragment implements ColorPicker.OnColorPick
         super.onActivityCreated(savedInstanceState);
 
         if(savedInstanceState != null){
+            previewDot.setCurrentX(savedInstanceState.getInt("x"));
+            previewDot.setCurrentY(savedInstanceState.getInt("y"));
+            previewDot.setRadius(savedInstanceState.getInt("radius"));
+            previewDot.setColor(savedInstanceState.getInt("color"));
             dot = savedInstanceState.getParcelable("dot");
+            position = savedInstanceState.getInt("position");
+
+            FragmentManager.BackStackEntry backEntry = getFragmentManager().getBackStackEntryAt(0);
+            String tag = backEntry.getName();
+            Fragment fragment = getActivity().getSupportFragmentManager().findFragmentByTag(tag);
+            if(fragment != null) {
+                listener = (MainFragment) fragment;
+            }
         }
     }
 
@@ -65,6 +85,7 @@ public class EditDotFragment extends Fragment implements ColorPicker.OnColorPick
 
         colorPicker = new ColorPicker(getActivity());
         colorPicker.setListener(EditDotFragment.this);
+
     }
 
     @Override
