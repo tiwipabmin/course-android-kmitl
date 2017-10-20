@@ -3,4 +3,7 @@
 
     <string name="cancel"><b><font fgcolor="#663300">Cancel</font></b></string>
     <string name="signIn"><b><font fgcolor="#663300">Sign In</font></b></string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
