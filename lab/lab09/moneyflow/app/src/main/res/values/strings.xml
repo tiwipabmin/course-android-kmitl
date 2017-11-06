@@ -11,6 +11,8 @@
     <string name="balance">0</string>
     <string name="transaction">เพิ่มรายการ</string>
     <string name="label_balance">ยอดคงเหลือ</string>
+    <string name="delete">ลบ</string>
+    <string name="detail_transaction">detail transaction</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
