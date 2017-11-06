@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">moneyflow</string>
+    <string name="label_type">ประเภท</string>
+    <string name="income">รายรับ</string>
+    <string name="outcome">รายจ่าย</string>
+    <string name="list">รายการ</string>
+    <string name="amount_of_money">จำนวนเงิน</string>
+    <string name="money">1,000,000</string>
+    <string name="record">บันทึก</string>
+    <string name="detail_income">เงินเดือน</string>
+    <string name="balance">0</string>
+    <string name="transaction">เพิ่มรายการ</string>
+    <string name="label_balance">ยอดคงเหลือ</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
