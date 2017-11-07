@@ -1,5 +1,7 @@
 package kmitl.it.tiwipabmin58070044.moneyflow.model;
 
+import android.arch.persistence.room.ColumnInfo;
+
 /**
  * Created by tiwip on 11/6/2017.
  */
@@ -24,5 +26,9 @@ public class Balance {
 
     public void setSum_expense(int sum_expense) {
         this.sum_expense = sum_expense;
+    }
+
+    public int getBalance() {
+        return sum_income - sum_expense;
     }
 }

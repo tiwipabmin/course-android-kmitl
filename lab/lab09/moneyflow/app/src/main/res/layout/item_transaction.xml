@@ -1,17 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/item_transaction"
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="25dp">
 
-    <ImageView
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@mipmap/ic_launcher"
-        android:layout_gravity="center"
-        android:layout_weight="4"/>
+        android:gravity="center"
+        android:layout_weight="4">
+
+        <ImageView
+            android:id="@+id/iv_transaction_symbol"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            />
+
+    </RelativeLayout>
+
 
     <TextView
+        android:id="@+id/tv_transaction_detail"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:text="@string/detail_income"
@@ -19,6 +29,7 @@
         android:layout_weight="2"/>
 
     <TextView
+        android:id="@+id/tv_amountOfMoney"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:text="@string/money"
