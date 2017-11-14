@@ -2,13 +2,13 @@ package com.project.demorecord;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.matcher.BoundedMatcher;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.support.v7.widget.RecyclerView;
-import android.test.suitebuilder.annotation.LargeTest;
 import android.view.View;
 
 import org.hamcrest.Description;
@@ -20,19 +20,30 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static android.support.test.espresso.action.ViewActions.replaceText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
-@LargeTest
 @RunWith(AndroidJUnit4.class)
 public class MainActivityTest {
 
     @Rule
     public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
+
+    /*
+    * clear data
+    */
+    @After
+    public void clear() {
+        Context context = InstrumentationRegistry.getTargetContext();
+        SharedPreferences sp = context.getSharedPreferences(CommonSharePreference.NAME, Context.MODE_PRIVATE);
+        sp.edit().clear().apply();
+    }
 
     /* โดยไม่กรอก Name และ Age กดปุ่ม ADDED จะต้องเจอ Please Enter user info */
     @Test
@@ -186,7 +197,7 @@ public class MainActivityTest {
     }
 
     private void fill(int id, String text){
-        onView(withId(id)).perform(replaceText(text));
+        onView(withId(id)).perform(replaceText(text), closeSoftKeyboard());
     }
 
     public static Matcher<View> atPositionOnView(final int position, final Matcher<View> itemMatcher,
@@ -205,15 +216,5 @@ public class MainActivityTest {
                 return itemMatcher.matches(targetView);
             }
         };
-    }
-
-    /*
-    * clear data
-    */
-    @After
-    public void clear() {
-        Context context = InstrumentationRegistry.getTargetContext();
-        SharedPreferences sp = context.getSharedPreferences(CommonSharePreference.NAME, Context.MODE_PRIVATE);
-        sp.edit().clear().apply();
     }
 }
